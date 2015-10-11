@@ -1,12 +1,166 @@
 <html>
 <head>
-  <title>02 exponentials</title>
+  <title>02 Exponentials</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width"/>
+<link href='https://fonts.googleapbis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+<script type="text/x-mathjax-config">
+
+  MathJax.HTML.Cookie.Set("menu",{});
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    "HTML-CSS": {
+      availableFonts:[],
+      styles: {".MathJax_Preview": {visibility: "hidden"}}
+    }
+  });
+  MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
+    var FONT = MathJax.OutputJax["HTML-CSS"].Font;
+    FONT.loadError = function (font) {
+      MathJax.Message.Set("Can't load web font TeX/"+font.directory,null,2000);
+      document.getElementById("noWebFont").style.display = "";
+    };
+    FONT.firefoxFontError = function (font) {
+      MathJax.Message.Set("Firefox can't load web fonts from a remote host",null,3000);
+      document.getElementById("ffWebFont").style.display = "";
+    };
+  });
+
+(function (HUB) {
+
+  var MINVERSION = {
+    Firefox: 3.0,
+    Opera: 9.52,
+    MSIE: 6.0,
+    Chrome: 0.3,
+    Safari: 2.0,
+    Konqueror: 4.0,
+    Unknown: 10000.0
+  };
+
+  if (!HUB.Browser.versionAtLeast(MINVERSION[HUB.Browser]||0.0)) {
+    HUB.Config({
+      jax: [],
+      extensions: [],
+      "v1.0-compatible": false
+    });
+    setTimeout('document.getElementById("badBrowser").style.display = ""',0);
+  }
+
+})(MathJax.Hub);
+
+MathJax.Hub.Register.StartupHook("End",function () {
+  var HTMLCSS = MathJax.OutputJax["HTML-CSS"];
+  if (HTMLCSS && HTMLCSS.imgFonts) {document.getElementById("imageFonts").style.display = ""}
+});
+
+</script>
+<script type="text/javascript" src="MathJax\MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+window.onload=function(){
+
+    function getSelectedText(){
+    if (window.getSelection)
+    return window.getSelection().toString()+"<br/>"+document.URL;
+    else if (document.selection)
+     return document.selection.createRange().text+"<br/>"+document.URL;
+    }
+
+    var toc=document.getElementById("TOC");
+    if(!toc) {
+     toc=document.createElement("div");
+     toc.id="TOC";
+     document.body.insertBefore(toc, document.body.firstChild);
+    }
+    var headings;
+    if (document.querySelectorAll)
+    headings=document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    else
+    headings=findHeadings(document.body, []);
+
+    function findHeadings(root, sects){
+     for(var c=root.firstChild; c!=null; c=c.nextSibling){
+    if (c.nodeType!==1) continue;
+    if (c.tagName.length==2 && c.tagName.charAt(0)=="H")
+    sects.push(c);
+    else
+    findHeadings(c, sects);
+    }
+    return sects;
+    }
+
+    var sectionNumbers=[0,0,0,0,0,0];
+
+    for(var h=0; h<headings.length; h++) {
+     var heading=headings[h];
+
+    if(heading.parentNode==toc) continue;
+
+    var level=parseInt(heading.tagName.charAt(1));
+    if (isNaN(level)||level<1||level>6) continue;
+
+    sectionNumbers[level-1]++;
+    for(var i=level; i<6; i++) sectionNumbers[i]=0;
+
+    var sectionNumber=sectionNumbers.slice(0, level).join(".");
+
+    var span=document.createElement("span");
+    span.className="TOCSectNum";
+    span.innerHTML=sectionNumber;
+    heading.insertBefore(span, heading.firstChild);
+    heading.id="TOC"+sectionNumber;
+    var anchor=document.createElement("a");
+    heading.parentNode.insertBefore(anchor, heading);
+    anchor.appendChild(heading);
+
+    var link=document.createElement("a");
+    link.href="#TOC"+sectionNumber;
+    link.innerHTML=heading.innerHTML;
+
+    var entry=document.createElement("div");
+    entry.className="TOCEntry TOCLevel" + level;
+    entry.appendChild(link);
+
+    toc.appendChild(entry);
+    }
+};
+</script>
+
+<style>
+.warning {
+  color: #800020;
+  background-color: #FFF8F8;
+  border: 2px solid red;
+  margin: 1em 5em;
+  padding: 1em;
+}
+
+img {
+    max-width: 100%;
+   }
+
+.title {
+    font-family: 'Oswald';
+    sans-serif;
+
+  }
+h1 {
+    font-family: 'Oswald';
+    sans-serif;
+    font-size: 40px;
+  }
+ {
+    text-align: center;
+  }
+</style>
 </head>
 <body>
   <div class="section">
-    <h1 class="title">Exponents</h1>
+    <h1 class="title"> Exponents</h1>
     <div class="section">
-      <h2 class="title">Introduction</h2>
+      <h2 class="title"> Introduction</h2>
       <p>Exponential notation is a short way of writing the same number multiplied by itself many times. This is very useful in everyday life. You may have heard someone describe the size of an area in <em>square</em> metres or <em>square</em> kilometres. For example, the largest radio telescope in the world is being built in South Africa. The telescope is called the <em>square kilometre</em> array, or SKA. This is because the telescope will occupy an area of \(\text{1}\) kilometre by \(\text{1}\) kilometre or \(\text{1}\) kilometre squared.</p>
       
       <figure><img src="images/SKA.jpg" alt="SKA Organisation (https://www.flickr.com/photos/uclmaps/13221058125/)"/><figcaption class="caption">Antennas from the Square Kilometre Array (artist's concept).</figcaption></figure><p>Exponents are also very useful to describe very large and very small numbers. For example, the SKA will be detecting incredibly weak signals from objects which are so far away that to write out the strength of the signal or the number of kilometres away in full would be impractical. Outside of astronomy, exponents are required by many other professions such as computer programmers, engineers, economists, financial analysts, biologists and demographers.</p>
@@ -77,7 +231,7 @@
     </div>
 
     <div class="section" id="scEMAAG">
-      <h2 class="title">Revision of exponent laws</h2>
+      <h2 class="title"> Revision of exponent laws</h2>
       <p>There are several laws we can use to make working with exponential numbers easier. Some of these laws might have been done in earlier grades, but we list all the laws here for easy reference:</p>
       
       <div class="mathidentity">
@@ -108,7 +262,7 @@
         <p>Part 1:</p>
         <p data-class="video" id="scSHORTCODE"><a href="www.youtube.com/embed/kITJ6qH7jS0">Video: None</a></p>
         <p>Part 2:</p>
-        <p data-class="video" id="scSHORTCODE"><a href="http://youtu.be/rEtuPhl6930">Video: None</a></p></div><div class="worked_example"><h1 class="title">Applying the exponential laws</h1><div class="question">
+        <p data-class="video" id="scSHORTCODE"><a href="http://youtu.be/rEtuPhl6930">Video: None</a></p></div><div class="worked_example"><h1 class="title"> Applying the exponential laws</h1><div class="question">
           
         <p>Simplify:</p>
         <ol data-class="ListEnumerated">
@@ -168,20 +322,20 @@
     </div>
 
     <div class="worked_example">
-      <h1 class="title">Exponential expressions</h1>
+      <h1 class="title"> Exponential expressions</h1>
 
       <div class="question">
         <p>Simplify: \(\dfrac{{2}^{2n}\times {4}^{n}\times 2}{{16}^{n}}\)</p>
       </div>
 
       <div class="workstep">
-        <h2 class="title">Change the bases to prime numbers</h2>
+        <h2 class="title"> Change the bases to prime numbers</h2>
         
         <p>At first glance it appears that we cannot simplify this expression. However, if we reduce the bases to prime bases, then we can apply the exponent laws.</p>
 \[\dfrac{{2}^{2n} \times {4}^{n} \times 2}{{16}^{n}} = \dfrac{{2}^{2n} \times  {\left({2}^{2}\right)}^{n} \times {2}^{1}}{{\left({2}^{4}\right)}^{n}}\]
       </div>
 
-      <div class="workstep"><h2 class="title">Simplify the exponents</h2>
+      <div class="workstep"><h2 class="title"> Simplify the exponents</h2>
         \begin{align*}
               &amp; =\dfrac{{2}^{2n} \times {2}^{2n} \times {2}^{1}}{{2}^{4n}} \\ 
               &amp; = \dfrac{{2}^{2n + 2n + 1}}{{2}^{4n}} \\ 
@@ -197,51 +351,51 @@
     </div>
 
     <div class="worked_example">
-      <h1 class="title">Exponential expressions</h1>
+      <h1 class="title"> Exponential expressions</h1>
 
       <div class="question">    
         <p>Simplify: \[\dfrac{{5}^{2x - 1}{9}^{x - 2}}{{15}^{2x - 3}}\]</p>
       </div>
 
       <div class="workstep">
-        <h2 class="title">Change the bases to prime numbers</h2>
+        <h2 class="title"> Change the bases to prime numbers</h2>
 \begin{align*}
               \dfrac{{5}^{2x - 1}{9}^{x - 2}}{{15}^{2x - 3}} &amp; = \dfrac{{5}^{2x - 1}{\left({3}^{2}\right)}^{x - 2}}{{\left(5\times 3\right)}^{2x - 3}} \\ 
               &amp; = \dfrac{{5}^{2x - 1}{3}^{2x - 4}}{{5}^{2x - 3}{3}^{2x - 3}} 
               \end{align*}
       </div>
       <div class="workstep">
-        <h2 class="title">Subtract the exponents (same base)</h2>
+        <h2 class="title"> Subtract the exponents (same base)</h2>
 \begin{align*}
               &amp; = {5}^{\left(2x - 1\right) - \left(2x - 3\right)} \times {3}^{\left(2x - 4\right) - \left(2x - 3\right)} \\ 
               &amp; = {5}^{2x - 1 - 2x + 3} \times {3}^{2x - 4 - 2x + 3} \\ 
               &amp; = {5}^{2} \times {3}^{-1} 
-              \end{align*}</div><div class="workstep"><h2 class="title">Write the answer as a fraction</h2>
+              \end{align*}</div><div class="workstep"><h2 class="title"> Write the answer as a fraction</h2>
 \begin{align*}
               &amp;= \dfrac{{5}^{2}}{3} \\
               &amp; = \dfrac{25}{3}
               \end{align*}</div></div><div class="note note">
 <p>When working with exponents, all the laws of operation for algebra apply.</p>
-</div><div class="worked_example"><h1 class="title">Simplifying by taking out a common factor</h1><div class="question">
+</div><div class="worked_example"><h1 class="title"> Simplifying by taking out a common factor</h1><div class="question">
           
 <p>Simplify: 
-            \[\dfrac{{2}^{t} - {2}^{t - 2}}{3\dottimes {2}^{t} - {2}^{t}}\]</p>
+            \[\dfrac{{2}^{t} - {2}^{t - 2}}{3\dot{x} {2}^{t} - {2}^{t}}\]</p>
 
           </div>
 
           <div class="workstep">
-            <h2 class="title">Simplify to a form that can be factorised</h2>
+            <h2 class="title"> Simplify to a form that can be factorised</h2>
 
-<p>For each of the exponent laws we can "undo" the law - in other words we can work backwards. For this expression we can reverse the multiplication law to write \(2^{t - 2}\) as \(2^{t} \dottimes 2^{-2}\).</p>
-\[\dfrac{{2}^{t} - {2}^{t - 2}}{3\dottimes {2}^{t} - {2}^{t}} = \dfrac{{2}^{t} - \left({2}^{t}\dottimes {2}^{-2}\right)}{3\dottimes {2}^{t}-{2}^{t}}\]
+<p>For each of the exponent laws we can "undo" the law - in other words we can work backwards. For this expression we can reverse the multiplication law to write \(2^{t - 2}\) as \(2^{t} \dot{x} 2^{-2}\).</p>
+\[\dfrac{{2}^{t} - {2}^{t - 2}}{3\dot{x} {2}^{t} - {2}^{t}} = \dfrac{{2}^{t} - \left({2}^{t}\dot{x} {2}^{-2}\right)}{3\dot{x} {2}^{t}-{2}^{t}}\]
           </div>
           <div class="workstep">
-            <h2 class="title">Take out a common factor</h2>
+            <h2 class="title"> Take out a common factor</h2>
 \begin{align*}
                 &amp; = \dfrac{{2}^{t}\left(1 - {2}^{-2}\right)}{{2}^{t}\left(3 - 1\right)}
                 \end{align*}</div>
                 <div class="workstep">
-                  <h2 class="title">Cancel the common factor and simplify</h2>
+                  <h2 class="title"> Cancel the common factor and simplify</h2>
 \begin{align*}
                 &amp; = \dfrac{1-2^{-2}}{3-1} \\
                 &amp; = \dfrac{1 - \dfrac{1}{4}}{2}\\ 
@@ -257,7 +411,7 @@
             </div>
 
             <div class="worked_example">
-              <h1 class="title">Simplifying using difference of two squares</h1>
+              <h1 class="title"> Simplifying using difference of two squares</h1>
                 <div class="question">
             
                 <p>Simplify: 
@@ -266,20 +420,20 @@
                 </div>
 
               <div class="workstep">
-                <h2 class="title">Change the bases to prime numbers</h2>
+                <h2 class="title"> Change the bases to prime numbers</h2>
 \begin{align*} 
                 \dfrac{{9}^{x} - 1}{{3}^{x} + 1} &amp; = \dfrac{{\left({3}^{2}\right)}^{x} - 1}{{3}^{x} + 1} \\         
                 &amp; = \dfrac{{3}^{2x} - 1}{{3}^{x} + 1} \qquad \text{Recognise that } 3^{2x} = \left(3^{x}\right)^{2}
                 \end{align*}</div>
 
                 <div class="workstep">
-                  <h2 class="title">Factorise using the difference of squares</h2>
+                  <h2 class="title"> Factorise using the difference of squares</h2>
 \begin{align*} 
                 &amp; = \dfrac{\left({3}^{x} - 1\right)\left({3}^{x} + 1\right)}{{3}^{x} + 1} 
                 \end{align*}
                 </div>
                 <div class="workstep">
-                  <h2 class="title">Cancel the common factor and simplify</h2>
+                  <h2 class="title"> Cancel the common factor and simplify</h2>
 \begin{align*} 
                 &amp; = {3}^{x}-1 
                 \end{align*}
@@ -319,4 +473,5 @@
     </div>
     </div>
 </body>
+
 </html>
